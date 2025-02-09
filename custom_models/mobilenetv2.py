@@ -2,9 +2,6 @@ import torch.nn as nn
 import torchvision.models as models
 
 class SkinCancerMobileNetV2(nn.Module):
-    """
-    MobileNetV2 backbone with classifier head 
-    """
     def __init__(self, pretrained=True, freeze_backbone=False):
         super(SkinCancerMobileNetV2, self).__init__()
         

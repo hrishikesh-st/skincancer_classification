@@ -94,3 +94,49 @@ def create_dataloaders(
     )
     
     return train_loader, val_loader, test_loader
+
+
+def create_autoencoder_dataloaders(
+    base_dir='data',
+    transform_train=None,
+    transform_test=None,
+    batch_size=32,
+    num_workers=2,     
+):
+    # training dirs
+    train_benign_dir = os.path.join(base_dir, 'train', 'Benign')
+    train_malign_dir = os.path.join(base_dir, 'train', 'Malignant')
+    
+    # testing dirs
+    test_benign_dir  = os.path.join(base_dir, 'test', 'Benign')
+    test_malign_dir  = os.path.join(base_dir, 'test', 'Malignant')
+
+    # instantiate train datasets
+    ds_train_benign = SkinCancerDataset(train_benign_dir, transform=transform_train)
+    ds_train_malignant = SkinCancerDataset(train_malign_dir, transform=transform_train)
+    
+    # instantiate test datasets
+    ds_test_benign  = SkinCancerDataset(test_benign_dir,  transform=transform_test)
+    ds_test_malignant  = SkinCancerDataset(test_malign_dir,  transform=transform_test)
+
+     # combine benign and malignant datasets
+    full_train_dataset = ConcatDataset([ds_train_benign, ds_train_malignant])
+    test_dataset  = ConcatDataset([ds_test_benign, ds_test_malignant])
+
+    # train dataloader
+    train_loader = DataLoader(
+        full_train_dataset, 
+        batch_size=batch_size,
+        shuffle=True, 
+        num_workers=num_workers
+    )
+
+    # test dataloader
+    test_loader  = DataLoader(
+        test_dataset, 
+        batch_size=batch_size,
+        shuffle=False, 
+        num_workers=num_workers
+    )
+
+    return train_loader, test_loader

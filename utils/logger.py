@@ -1,7 +1,7 @@
 import logging
 import os
 
-def get_logger(log_dir):
+def get_logger(log_dir, log_file="train.log"):
     """
     Logger for file and console.
 
@@ -10,7 +10,8 @@ def get_logger(log_dir):
     :return: logger
     :rtype: logging.Logger
     """
-    log_path = os.path.join(log_dir, "train.log")
+    os.makedirs(log_dir, exist_ok=True)
+    log_path = os.path.join(log_dir, log_file)
 
     logging.basicConfig(
         filename=log_path,

@@ -3,8 +3,8 @@ import argparse
 import os
 from transforms.transforms import get_train_transforms, get_test_transforms
 from utils.data_utils import create_dataloaders
-from models.baseline import Baseline
-from models.mobilenetv2 import SkinCancerMobileNetV2
+from custom_models.baseline import Baseline
+from custom_models.mobilenetv2 import SkinCancerMobileNetV2
 from utils.train_utils import train_model
 from utils.logger import get_logger
 from datetime import datetime
@@ -34,7 +34,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def create_run_directory(model_name, lr, epochs, batch_size, lr_decay):
+def create_run_directory(model_name, lr, epochs, batch_size, lr_decay, seed):
     """
     Create run directory inside 'runs/' with the hyperparams in the folder name.
 
@@ -52,7 +52,7 @@ def create_run_directory(model_name, lr, epochs, batch_size, lr_decay):
     :rtype: str
     """
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    run_folder_name = f"{model_name}_run_lr-{lr}_ep-{epochs}_bs-{batch_size}_decay-{lr_decay}_{timestamp}"
+    run_folder_name = f"{model_name}_run_lr-{lr}_ep-{epochs}_bs-{batch_size}_decay-{lr_decay}_seed-{seed}_{timestamp}"
     run_dir = os.path.join("runs", run_folder_name)
     os.makedirs(run_dir, exist_ok=True)
     return run_dir
@@ -62,7 +62,7 @@ def main():
     args = parse_args()
 
     # run dir
-    run_dir = create_run_directory(args.model_name, args.lr, args.epochs, args.batch_size, args.lr_decay)
+    run_dir = create_run_directory(args.model_name, args.lr, args.epochs, args.batch_size, args.lr_decay, args.seed)
 
     # logger
     logger = get_logger(run_dir)
@@ -159,3 +159,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# python baseline_MNetV2_train.py --base_dir data --epochs 21 --batch_size 64 --lr 1e-4 --val_split 0.2 --model_name baseline --device cuda

@@ -3,3 +3,4 @@ logs/
 runs/
 *.pth
 __pycache__/
+results/

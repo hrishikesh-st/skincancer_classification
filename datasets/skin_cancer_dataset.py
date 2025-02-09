@@ -32,3 +32,26 @@ class SkinCancerDataset(Dataset):
             image = self.transform(image)
         
         return image, torch.tensor(self.label, dtype=torch.float)
+    
+
+class AutoEncoderDataset(Dataset):
+    def __init__(self, root_dir, transform=None):
+        self.root_dir = root_dir
+        self.transform = transform
+        
+        # image paths
+        self.image_paths = [
+            os.path.join(self.root_dir, fname)
+            for fname in os.listdir(self.root_dir)
+            if fname.lower().endswith(('.jpg', '.jpeg', '.png'))
+        ]
+
+    def __len__(self):
+        return len(self.image_paths)
+
+    def __getitem__(self, idx):
+        img_path = self.image_paths[idx]
+        image = Image.open(img_path).convert("RGB")
+        if self.transform:
+            image = self.transform(image)
+        return image, image 

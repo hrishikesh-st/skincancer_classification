@@ -9,7 +9,7 @@ from utils.data_utils import create_dataloaders
 from utils.train_utils import train_model
 from utils.metrics import evaluate_on_test
 
-from models.mobilenetv2 import SkinCancerMobileNetV2
+from custom_models.mobilenetv2 import SkinCancerMobileNetV2
 from transforms.transforms import get_train_transforms, get_test_transforms
 
 # hyperparameter grid
