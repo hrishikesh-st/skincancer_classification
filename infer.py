@@ -39,12 +39,7 @@ def load_model(model_path, model_name, device):
 
 def visualize_predictions(image_path, output_dir, ground_truth, prediction):
     """
-    Adds black padding to the image and annotates ground truth and prediction labels.
-
-    :param image_path: Path to the input image
-    :param output_dir: Directory to save the modified image
-    :param ground_truth: Actual class label (Benign/Malignant)
-    :param prediction: Predicted class label (Benign/Malignant)
+    Add black padding to the image and annotates ground truth and prediction labels.
     """
     image = Image.open(image_path).convert("RGB")
     img_width, img_height = image.size
@@ -64,13 +59,16 @@ def visualize_predictions(image_path, output_dir, ground_truth, prediction):
     draw.text((10, 10), f"GT: {ground_truth}", fill=text_color, font=font)  
     draw.text((10, new_height - 30), f"PRED: {prediction}", fill=text_color, font=font)  
 
-    output_path = os.path.join(output_dir, os.path.basename(image_path))
+    # unique filename 
+    img_name = os.path.basename(image_path)  
+    output_filename = f"{ground_truth}_{img_name}"
+    output_path = os.path.join(output_dir, output_filename)
+    
     padded_image.save(output_path)
 
 def run_inference(test_dir, model_path, model_name, output_dir, device, logger):
     """
     Runs inference on the test dataset and saves the annotated images.
-    Assumes the model is trained with BCEWithLogitsLoss (binary classification).
     """
     os.makedirs(output_dir, exist_ok=True)
     logger.info(f"Loading model from: {model_path}")
@@ -97,7 +95,7 @@ def run_inference(test_dir, model_path, model_name, output_dir, device, logger):
 
             with torch.no_grad():
                 output = model(input_tensor).squeeze(1)  
-                pred_prob = torch.sigmoid(output).item() 
+                pred_prob = torch.sigmoid(output).item()  
                 pred_label = pred_prob > 0.5  
 
             predicted_class = "Malignant" if pred_label else "Benign"
