@@ -4,7 +4,7 @@
 </figure>
 <figure>
 <div align="center">
-<img src='media/teaser.png' width="80%">
+<img src='media/teaser.png' width="100%">
 <figcaption>
     <div>
         Classification Results
@@ -36,10 +36,16 @@
    cd skincancer_classification
    ```
 
-2. Install dependencies:
+2. Create and activate a new Conda environment:
+   ```bash
+   conda create --name skincancer_env python=3.8 -y
+   conda activate skincancer_env
+   ```
+
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
-   ```
+
 ---
 
 ## Usage
@@ -47,11 +53,11 @@
 ### Training
 
 Three models were trained:
-1. Basline CNN
+1. Baseline CNN
 2. MobileNetV2
 3. Custom Encoder + Classifier
 
-#### Basline CNN
+#### Baseline CNN
 
 Train the baseline CNN model:
 ```bash
@@ -158,14 +164,17 @@ Example:
 ```bash
 python ensemble_train_final.py --base_dir data --epochs1 25 --epochs2 40 --batch_size 64 --lr1 1e-3 --lr2 5e-5 --lr_decay 0.9 --val_split 0.2 --lr_decay 0.75 --model_name encoder_classifier --device cuda
 ```
-#### Real-time Camera Feed
-
-For real-time camera feed, you can follow the same steps as above. Make sure to subscribe to the correct image topics based on your camera you are using.
-
 
 ### Results
 
-The classification results for the three models are as follows:
+The classification results for the three models on the TestSet are as follows:
+
+| Metric                      | Baseline CNN | MobileNetV2 | Custom Encoder + Classifier |
+|-----------------------------|-------------|-------------|-----------------------------|
+| Accuracy                    | 80.95 %     | 90.10 %     | 91.50 %                     |
+| Precision                   | 0.9317      | 0.9465      | 0.9296                      |
+| Recall                      | 0.6680      | 0.8500      | 0.8980                      |
+| F1 Score                    | 0.7781      | 0.8957      | 0.9135                      |
  
 #### Baseline CNN Results
 <figure>
@@ -178,15 +187,6 @@ The classification results for the three models are as follows:
         </figcaption>
     </div>
 </figure>
-
-TestSet Performance:
-
-| Metric                      |  Value   |
-|-----------------------------|----------|
-| Accuracy                    | 80.95 %  |
-| Precision                   | 0.9317   |
-| Recall                      | 0.6680   |
-| F1 Score                    | 0.7781   |
 
 
 
@@ -202,14 +202,6 @@ TestSet Performance:
     </div>
 </figure>
 
-TestSet Performance:
-
-| Metric                      |  Value   |
-|-----------------------------|----------|
-| Accuracy                    | 90.10 %  |
-| Precision                   | 0.9465   |
-| Recall                      | 0.8500   |
-| F1 Score                    | 0.8957   |
 
 #### Custom Encoder + Classifier Results
 
@@ -236,12 +228,3 @@ TestSet Performance:
         </figcaption>
     </div>
 </figure>
-
-TestSet Performance:
-
-| Metric                      |  Value   |
-|-----------------------------|----------|
-| Accuracy                    | 91.50 %  |
-| Precision                   | 0.9296   |
-| Recall                      | 0.8980   |
-| F1 Score                    | 0.9135   |
