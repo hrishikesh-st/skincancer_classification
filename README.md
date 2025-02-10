@@ -24,6 +24,7 @@
     - [Baseline CNN Results](#baseline-cnn-results)
     - [MobileNetV2 Results](#mobilenetv2-results)
     - [Custom Encoder + Classifier Results](#custom-encoder--classifier-results)
+  - [Inference](#inference)
 ---
 
 ## Installation
@@ -228,3 +229,28 @@ The classification results for the three models on the TestSet are as follows:
         </figcaption>
     </div>
 </figure>
+
+### Inference
+
+To run inference on a single image:
+```bash
+usage: infer.py [-h] --test_dir TEST_DIR --model_path MODEL_PATH --output_dir OUTPUT_DIR [--device {cuda,cpu}] --model_name {baseline,mobilenetv2,encoder_classifier}
+
+Run inference on a folder of test images
+
+options:
+  -h, --help            show this help message and exit
+  --test_dir TEST_DIR   Path to test dataset directory
+  --model_path MODEL_PATH
+                        Path to trained model (.pth)
+  --output_dir OUTPUT_DIR
+                        Path to save annotated images
+  --device {cuda,cpu}   Device to use for inference
+  --model_name {baseline,mobilenetv2,encoder_classifier}
+                        Select the model architecture
+```
+
+Example:
+```bash
+python infer.py --test_dir data/TestSet --model_path models/baseline.pth --output_dir results --device cuda --model_name baseline
+```
